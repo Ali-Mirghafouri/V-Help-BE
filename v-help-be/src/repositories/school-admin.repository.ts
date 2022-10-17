@@ -1,6 +1,6 @@
 import {inject} from '@loopback/core';
 import {DefaultCrudRepository} from '@loopback/repository';
-import {Error: bad inputDataSource} from '../datasources';
+import {MainDataSource} from '../datasources';
 import {SchoolAdmin, SchoolAdminRelations} from '../models';
 
 export class SchoolAdminRepository extends DefaultCrudRepository<
@@ -9,7 +9,7 @@ export class SchoolAdminRepository extends DefaultCrudRepository<
   SchoolAdminRelations
 > {
   constructor(
-    @inject('datasources.') dataSource: Error: bad inputDataSource,
+    @inject('datasources.main') dataSource: MainDataSource,
   ) {
     super(SchoolAdmin, dataSource);
   }
