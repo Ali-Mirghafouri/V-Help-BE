@@ -1,3 +1,8 @@
+// Copyright z80lives <shath.ibrahim@gmail.com> 2022. All Rights Reserved.
+// Node module: v-help-be
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
 import {Client, expect} from '@loopback/testlab';
 import {VHelpBeApplication} from '../..';
 import {setupApplication} from './test-helper';
