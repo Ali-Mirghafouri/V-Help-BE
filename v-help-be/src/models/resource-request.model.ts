@@ -14,12 +14,12 @@ export class ResourceRequest extends Request {
   })
   resourceType: string;
 
-  @property({
-    type: 'string',
-    id: true,
-    generated: true,
-  })
-  _id?: string;
+  // @property({
+  //   type: 'string',
+  //   id: true,
+  //   generated: true,
+  // })
+  // _id?: string;
 
   @property({
     type: 'number',

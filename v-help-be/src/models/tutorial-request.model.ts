@@ -20,12 +20,12 @@ export class TutorialRequest extends Request {
   })
   proposedTime: string;
 
-  @property({
-    type: 'string',
-    id: true,
-    generated: true,
-  })
-  _id?: string;
+  // @property({
+  //   type: 'string',
+  //   id: true,
+  //   generated: true,
+  // })
+  // _id?: string;
 
   @property({
     type: 'string',
