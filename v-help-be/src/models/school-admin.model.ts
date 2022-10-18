@@ -8,10 +8,19 @@ import {User} from '.';
 
 @model({settings: {strict: false}})
 export class SchoolAdmin extends User {
+
+
   @property({
     type: 'string',
     id: true,
     generated: true,
+  })
+  _id?: string;
+
+  @property({
+    type: 'string',
+    // id: true,
+    // generated: true,
   })
   staffID?: string;
 

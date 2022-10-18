@@ -4,3 +4,6 @@
 // License text available at https://opensource.org/licenses/MIT
 
 export * from './ping.controller';
+export * from './auth.controller';
+export * from './school-admin.controller';
+export * from './volunteer.controller';

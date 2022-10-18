@@ -56,9 +56,9 @@ export class MainDataSource extends juggler.DataSource
     dsConfig: object = config,
   ) {
       //We load devconfig if the .env cannot be loaded or env type is dev
-      if((!!dotenv) || (dotenv?.DB_MODE === 'dev')  ){
-	  super(devConfig); 
-	  console.info("Using dev database")
+      if((!dotenv) || (dotenv?.DB_MODE === 'dev')  ){
+        super(devConfig);
+        console.info("Using dev database")
       }
       else{	
 	  super(dsConfig);

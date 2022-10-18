@@ -34,7 +34,8 @@
     "prestart": "npm run rebuild",
     "start": "node -r source-map-support/register .",
     "clean": "lb-clean dist *.tsbuildinfo .eslintcache",
-    "rebuild": "npm run clean && npm run build"
+    "rebuild": "npm run clean && npm run build",
+    "gen-ng": "npm run openapi-spec && ng-openapi-gen --input ./dist/open-api.spec.json --output ../tools/api/ && cp cfg/api-configuration.ts ../tools/api/api-configuration.ts"
   },
   "repository": {
     "type": "git",
@@ -49,6 +50,8 @@
     "!*/__tests__"
   ],
   "dependencies": {
+    "@loopback/authentication": "^9.0.4",
+    "@loopback/authentication-jwt": "^0.12.4",
     "@loopback/boot": "^5.0.4",
     "@loopback/core": "^4.0.4",
     "@loopback/repository": "^5.0.4",

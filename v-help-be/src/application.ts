@@ -14,6 +14,9 @@ import {RestApplication} from '@loopback/rest';
 import {ServiceMixin} from '@loopback/service-proxy';
 import path from 'path';
 import {MySequence} from './sequence';
+import {AuthenticationComponent} from '@loopback/authentication';
+import {JWTAuthenticationComponent, UserServiceBindings} from '@loopback/authentication-jwt';
+import {MainDataSource} from './datasources';
 
 export {ApplicationConfig};
 
@@ -34,6 +37,11 @@ export class VHelpBeApplication extends BootMixin(
       path: '/explorer',
     });
     this.component(RestExplorerComponent);
+
+    //setup authentication components
+    this.component(AuthenticationComponent);
+    this.component(JWTAuthenticationComponent);
+    this.dataSource(MainDataSource, UserServiceBindings.DATASOURCE_NAME);
 
     this.projectRoot = __dirname;
     // Customize @loopback/boot Booter Conventions here
