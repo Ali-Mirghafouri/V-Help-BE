@@ -15,7 +15,11 @@ import {ServiceMixin} from '@loopback/service-proxy';
 import path from 'path';
 import {MySequence} from './sequence';
 import {AuthenticationComponent} from '@loopback/authentication';
-import {JWTAuthenticationComponent, UserServiceBindings} from '@loopback/authentication-jwt';
+import {
+  JWTAuthenticationComponent,
+  RefreshTokenServiceBindings,
+  UserServiceBindings,
+} from '@loopback/authentication-jwt';
 import {MainDataSource} from './datasources';
 
 export {ApplicationConfig};
@@ -42,6 +46,7 @@ export class VHelpBeApplication extends BootMixin(
     this.component(AuthenticationComponent);
     this.component(JWTAuthenticationComponent);
     this.dataSource(MainDataSource, UserServiceBindings.DATASOURCE_NAME);
+    this.dataSource(MainDataSource, RefreshTokenServiceBindings.DATASOURCE_NAME);
 
     this.projectRoot = __dirname;
     // Customize @loopback/boot Booter Conventions here

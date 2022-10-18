@@ -52,11 +52,46 @@ describe("Authentication acceptance", () => {
       occupation: "Student",
       type: 'volunteer'
     }
-    it("Register a new volunteer", async () => {
+    let volunteerTokens : {accessToken: string};
+
+    it("Registers a a new volunteer", async () => {
       const result = await client.post("/auth/register").send(volunteerData);
 
-      console.debug(result.body?.error?.details);
+      // console.debug(result.body?.error?.details);
 
+      expect(result.status).equal(200);
+      expect(result.body).to.not.be.empty();
+    });
+
+    it("New volunteer can login", async () => {
+      const result = await client.post("/auth/login").send({
+        username: "volunteer@mail.com",
+        password: "12345678"
+      })
+
+      expect(result.status).equal(200);
+      expect(result.body).to.not.be.empty();
+
+      volunteerTokens = result.body;
+    });
+
+    it("Fetch volunteers", async () => {
+      const result = await client.get("/volunteers");
+
+      console.debug(result.body);
+
+      expect(result.status).equal(200);
+      expect(result.body).to.not.be.empty();
+      expect(result.body.length).equal(1);
+    })
+
+    it("Check if login works ", async () => {
+      const result = await client.get("/auth/whoami").auth(
+        volunteerTokens.accessToken,
+        {type: 'bearer'}
+        );
+
+      // console.log("result  -- ", result.body)
       expect(result.status).equal(200);
       expect(result.body).to.not.be.empty();
     })

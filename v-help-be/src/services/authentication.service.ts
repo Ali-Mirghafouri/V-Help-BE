@@ -1,9 +1,18 @@
-import {injectable, /* inject, */ BindingScope} from '@loopback/core';
+import {injectable, /* inject, */ BindingScope, inject, service} from '@loopback/core';
 import {compare, genSalt, hash} from 'bcryptjs';
-import {UserRepository} from '@loopback/authentication-jwt';
+import {
+  RefreshtokenService,
+  TokenServiceBindings,
+  User,
+  UserCredentials,
+  UserRepository,
+} from '@loopback/authentication-jwt';
 import {repository} from '@loopback/repository';
 import {SchoolAdminRepository, VolunteerRepository} from '../repositories';
 import {SchoolAdmin, User as VHUser, Volunteer} from '../models';
+import {TokenService} from '@loopback/authentication';
+import {UserProfile, securityId} from '@loopback/security';
+import {HttpErrors} from '@loopback/rest';
 
 @injectable({scope: BindingScope.TRANSIENT})
 export class AuthenticationService {
@@ -13,7 +22,11 @@ export class AuthenticationService {
     @repository(SchoolAdminRepository)
     public adminRepository : SchoolAdminRepository,
     @repository(VolunteerRepository)
-    public volunteerRepo : VolunteerRepository
+    public volunteerRepo : VolunteerRepository,
+    @inject(TokenServiceBindings.TOKEN_SERVICE)
+    public jwtService : TokenService,
+    @service(RefreshtokenService)
+    public refreshService: RefreshtokenService,
   ) {}
 
   async create(
@@ -34,11 +47,83 @@ export class AuthenticationService {
 
     const userAccount = new VHUser({
       ...userData,
-      password: pwdHash,
+      password: "",
     });
 
     const savedAccount = await userRepo.create(userAccount);
 
+    const user = await this.userRepository.create({
+      username: savedAccount.username,
+      email: savedAccount.email
+    })
+
+    let userCreds!: UserCredentials;
+    if (user.getId()) {
+      userCreds = await this.userRepository
+        .userCredentials(user.getId())
+        .create({password: pwdHash});
+    }
+
+    if (!userCreds.id && user.getId()) {
+      await this.userRepository.deleteById(user.getId());
+    }
+
     return savedAccount;
+  }
+
+
+  async login(user: User) {
+    // convert a User object into a UserProfile object (reduced set of properties)
+    const userProfile: UserProfile = this.convertToUserProfile(user);
+
+    // create a JSON Web Token based on the user profile
+    const token = await this.jwtService.generateToken(userProfile);
+    // await this.jwtService.verifyToken(token);
+
+    // this._logger.info("AuthService: User authenticated ", userProfile);
+    // console.log("User authenticated", userProfile);
+    const tokens = await this.refreshService.generateToken(
+      userProfile,
+      token
+    );
+    return tokens;
+  }
+
+  convertToUserProfile(user: User): UserProfile {
+    return {
+      [securityId]: user.getId().toString(),
+      name: user.username,
+      id: user.getId(),
+      email: user.email,
+    };
+  }
+
+  async verifyCredentials(credentials: {password: string; username: string}) {
+    const invalidCredentialsError = 'Invalid email or password.';
+    const foundUser = await this.userRepository.findOne({
+      where: {email: credentials.username},
+    });
+
+    if (!foundUser) {
+      throw new HttpErrors.Unauthorized(invalidCredentialsError);
+    }
+
+    const credentialsFound = await this.userRepository.findCredentials(
+      foundUser.id,
+    );
+    if (!credentialsFound) {
+      throw new HttpErrors.Unauthorized(invalidCredentialsError);
+    }
+
+    const passwordMatched = await compare(
+      credentials.password,
+      credentialsFound.password,
+    );
+
+    if (!passwordMatched) {
+      throw new HttpErrors.Unauthorized(invalidCredentialsError);
+    }
+
+    return foundUser;
   }
 }
