@@ -147,6 +147,47 @@ export class AuthController {
       password: credentials.password,
     });
 
+
+    return this.authService.login(user);
+  }
+
+  @authenticate.skip()
+  @response(200, {
+    description: 'Let root user login to the system',
+    content: {'application/json': {schema: TokenSchema}},
+  })
+  @post('/auth/login/root', {
+    responses: {
+      '200': {
+        description: 'Token',
+        content: {
+          'application/json': {
+            schema: {
+              type: 'object',
+              properties: {
+                accessToken: {
+                  type: 'string',
+                },
+                refreshToken: {
+                  type: 'string'
+                }
+              },
+            },
+          },
+        },
+      },
+    },
+  })
+  async rootLogin(
+    @requestBody(CredentialsRequestBody)
+      credentials: LoginCredentials,
+  ): Promise<TokenObject | Error> {
+    //redundant
+    const user : User = await this.authService.verifyRootCredentials({
+      username: credentials.username ?? '',
+      password: credentials.password,
+    });
+
     return this.authService.login(user);
   }
 
@@ -155,10 +196,10 @@ export class AuthController {
     description: 'User ID of the caller. Response is in plaintext format.',
   })
   @get('/auth/whoami')
-  whoAmI(): string {
+  whoAmI(): any {
     // console.log("security id", securityId);
     // this._logger.log("info", "Calling who am I", securityId)
     console.debug("Who am I", this.userProfile[securityId])
-    return this.userProfile[securityId];
+    return {id: this.userProfile[securityId]};
   }
 }

@@ -65,15 +65,26 @@ describe("Authentication acceptance", () => {
 
     it("New volunteer can login", async () => {
       const result = await client.post("/auth/login").send({
-        username: "volunteer@mail.com",
-        password: "12345678"
+        username: "volunteer1",
+        password: "12345678",
+        emailVerified: false
       })
+
+      console.debug(result.body)
 
       expect(result.status).equal(200);
       expect(result.body).to.not.be.empty();
 
       volunteerTokens = result.body;
     });
+
+    it("Should not allow another volunteer to register with same email", async () => {
+      const result = await client.post("/auth/register").send(volunteerData);
+
+      expect(result.status).not.equal(200);
+      expect(result.body).to.not.be.empty();
+    });
+
 
     it("Fetch volunteers", async () => {
       const result = await client.get("/volunteers");
@@ -85,16 +96,29 @@ describe("Authentication acceptance", () => {
       expect(result.body.length).equal(1);
     })
 
+
     it("Check if login works ", async () => {
       const result = await client.get("/auth/whoami").auth(
         volunteerTokens.accessToken,
         {type: 'bearer'}
         );
 
-      // console.log("result  -- ", result.body)
+      console.log("result  -- ", result.body)
       expect(result.status).equal(200);
       expect(result.body).to.not.be.empty();
     })
   })
 
+  describe("Test root user login",  () => {
+    it("Root user can login", async () => {
+      const result = await client.post("/auth/login/root").send({
+        username: "root",
+        password: "root1234"
+      })
+
+      console.log("result  -- ", result.body)
+      expect(result.status).equal(200);
+      expect(result.body).to.not.be.empty();
+    })
+  })
 })

@@ -45,6 +45,10 @@ export class AuthenticationService {
       throw new Error("User already exists!");
     }
 
+    if(userData.username === 'root'){
+      throw new Error("Cannot create an account with 'root' username");
+    }
+
     const userAccount = new VHUser({
       ...userData,
       password: "",
@@ -54,7 +58,8 @@ export class AuthenticationService {
 
     const user = await this.userRepository.create({
       username: savedAccount.username,
-      email: savedAccount.email
+      email: savedAccount.email,
+      realm: "email"
     })
 
     let userCreds!: UserCredentials;
@@ -101,18 +106,18 @@ export class AuthenticationService {
   async verifyCredentials(credentials: {password: string; username: string}) {
     const invalidCredentialsError = 'Invalid email or password.';
     const foundUser = await this.userRepository.findOne({
-      where: {email: credentials.username},
+      where: {username: credentials.username},
     });
 
     if (!foundUser) {
-      throw new HttpErrors.Unauthorized(invalidCredentialsError);
+      throw new HttpErrors.Unauthorized(invalidCredentialsError + " User not found");
     }
 
     const credentialsFound = await this.userRepository.findCredentials(
       foundUser.id,
     );
     if (!credentialsFound) {
-      throw new HttpErrors.Unauthorized(invalidCredentialsError);
+      throw new HttpErrors.Unauthorized(invalidCredentialsError+ " Credentials not found");
     }
 
     const passwordMatched = await compare(
@@ -121,6 +126,29 @@ export class AuthenticationService {
     );
 
     if (!passwordMatched) {
+      throw new HttpErrors.Unauthorized(invalidCredentialsError + " Password mismatch");
+    }
+
+    return foundUser;
+  }
+
+  async verifyRootCredentials(credentials: {password: string; username: string}) {
+    const invalidCredentialsError = 'Invalid email or password.';
+
+    let foundUser = await this.userRepository.findOne({
+      where: {username: 'root'},
+    });
+
+    if (!foundUser) {
+      foundUser = await this.userRepository.create({
+        username: 'root',
+        email: 'root@system.com'
+      } as User)
+      // throw new HttpErrors.Unauthorized(invalidCredentialsError);
+    }
+
+    //This is just for testing purpose. We're not really gonna store the root password here
+    if(credentials.password !== 'root1234'){
       throw new HttpErrors.Unauthorized(invalidCredentialsError);
     }
 
