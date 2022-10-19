@@ -35,7 +35,7 @@
     "start": "node -r source-map-support/register .",
     "clean": "lb-clean dist *.tsbuildinfo .eslintcache",
     "rebuild": "npm run clean && npm run build",
-    "gen-ng": "npm run openapi-spec && ng-openapi-gen --input ./data/open-api.spec.json --output ../tools/api/ && cp cfg/api-configuration.ts ../tools/api/api-configuration.ts"
+    "gen-ng": "npm run openapi-spec && ng-openapi-gen --input ./data/open-api.spec.json --output ../tools/api/ "
   },
   "repository": {
     "type": "git",
