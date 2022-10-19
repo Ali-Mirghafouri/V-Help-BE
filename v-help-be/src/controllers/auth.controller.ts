@@ -196,10 +196,23 @@ export class AuthController {
     description: 'User ID of the caller. Response is in plaintext format.',
   })
   @get('/auth/whoami')
-  whoAmI(): any {
+  async whoAmI() {
     // console.log("security id", securityId);
     // this._logger.log("info", "Calling who am I", securityId)
-    console.debug("Who am I", this.userProfile[securityId])
-    return {id: this.userProfile[securityId]};
+    // console.debug("Who am I", this.userProfile[securityId])
+    const id = this.userProfile[securityId];
+    return {id};
+  }
+
+  @response(200, {
+    type: 'string',
+    description: 'Userinfo of the caller. Response is an object.',
+  })
+  @get('/auth/info')
+  async info() {
+    const id = this.userProfile[securityId];
+    const user = await this.authService.userRepository.findById(id);
+    // const isAdmin = await this.
+    return user;
   }
 }

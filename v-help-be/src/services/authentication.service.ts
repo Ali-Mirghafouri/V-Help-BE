@@ -59,7 +59,8 @@ export class AuthenticationService {
     const user = await this.userRepository.create({
       username: savedAccount.username,
       email: savedAccount.email,
-      realm: "email"
+      realm: "email",
+      type
     })
 
     let userCreds!: UserCredentials;

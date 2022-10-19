@@ -21,6 +21,7 @@ describe("Authentication acceptance", () => {
       staffID: "b13212932",
       type: 'admin'
     }
+    let adminToken : any;
 
     it("Register a new admin", async () => {
       const result = await client.post("/auth/register").send(testAdminData);
@@ -37,6 +38,33 @@ describe("Authentication acceptance", () => {
       expect(result.status).equal(200);
       expect(result.body).to.not.be.empty();
       expect(result.body.length).equal(1);
+    })
+
+    it("New volunteer can login", async () => {
+      const result = await client.post("/auth/login").send({
+        username: "admin.test",
+        password: "12345678",
+        emailVerified: false
+      })
+
+      console.debug(result.body)
+
+      expect(result.status).equal(200);
+      expect(result.body).to.not.be.empty();
+
+      adminToken = result.body;
+    });
+
+    it("Admin can retrieve their own user info ", async () => {
+      const result = await client.get("/auth/info").auth(
+        adminToken.accessToken,
+        {type: 'bearer'}
+      );
+
+      console.log("result  -- ", result.body)
+      expect(result.status).equal(200);
+      expect(result.body).to.not.be.empty();
+      expect(result.body.type).equal("admin")
     })
 
   })
@@ -102,6 +130,17 @@ describe("Authentication acceptance", () => {
         volunteerTokens.accessToken,
         {type: 'bearer'}
         );
+
+      console.log("result  -- ", result.body)
+      expect(result.status).equal(200);
+      expect(result.body).to.not.be.empty();
+    })
+
+    it("Volunteer can retrieve their own user info ", async () => {
+      const result = await client.get("/auth/info").auth(
+        volunteerTokens.accessToken,
+        {type: 'bearer'}
+      );
 
       console.log("result  -- ", result.body)
       expect(result.status).equal(200);
