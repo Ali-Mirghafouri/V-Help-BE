@@ -7,6 +7,8 @@ import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 import { AuthControllerService } from './services/auth-controller.service';
 import { PingControllerService } from './services/ping-controller.service';
 import { SchoolAdminControllerService } from './services/school-admin-controller.service';
+import { SchoolAdminSchoolControllerService } from './services/school-admin-school-controller.service';
+import { SchoolControllerService } from './services/school-controller.service';
 import { VolunteerControllerService } from './services/volunteer-controller.service';
 
 /**
@@ -20,6 +22,8 @@ import { VolunteerControllerService } from './services/volunteer-controller.serv
     AuthControllerService,
     PingControllerService,
     SchoolAdminControllerService,
+    SchoolAdminSchoolControllerService,
+    SchoolControllerService,
     VolunteerControllerService,
     ApiConfiguration
   ],

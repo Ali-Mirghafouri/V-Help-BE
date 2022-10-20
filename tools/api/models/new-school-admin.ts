@@ -1,7 +1,10 @@
 /* tslint:disable */
 /* eslint-disable */
-export interface SchoolAdmin {
-  '_id'?: string;
+
+/**
+ * (tsType: Omit<SchoolAdmin, '_id'>, schemaOptions: { title: 'NewSchoolAdmin', exclude: [ '_id' ] })
+ */
+export interface NewSchoolAdmin {
   email: string;
   fullname: string;
   password?: string;

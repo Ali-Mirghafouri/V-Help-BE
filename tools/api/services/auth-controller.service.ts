@@ -23,6 +23,54 @@ export class AuthControllerService extends BaseService {
   }
 
   /**
+   * Path part for operation authControllerInfo
+   */
+  static readonly AuthControllerInfoPath = '/auth/info';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `info()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  info$Response(params?: {
+    context?: HttpContext
+  }
+): Observable<StrictHttpResponse<string>> {
+
+    const rb = new RequestBuilder(this.rootUrl, AuthControllerService.AuthControllerInfoPath, 'get');
+    if (params) {
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json',
+      context: params?.context
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<string>;
+      })
+    );
+  }
+
+  /**
+   * This method provides access to only to the response body.
+   * To access the full response (for headers, for example), `info$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  info(params?: {
+    context?: HttpContext
+  }
+): Observable<string> {
+
+    return this.info$Response(params).pipe(
+      map((r: StrictHttpResponse<string>) => r.body as string)
+    );
+  }
+
+  /**
    * Path part for operation authControllerRootLogin
    */
   static readonly AuthControllerRootLoginPath = '/auth/login/root';

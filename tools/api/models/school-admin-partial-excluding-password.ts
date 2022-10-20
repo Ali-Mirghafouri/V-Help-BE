@@ -2,13 +2,12 @@
 /* eslint-disable */
 
 /**
- * (tsType: Partial<SchoolAdmin>, schemaOptions: { partial: true })
+ * (tsType: Omit<Partial<SchoolAdmin>, 'password'>, schemaOptions: { partial: true, exclude: [ 'password' ] })
  */
-export interface SchoolAdminPartial {
+export interface SchoolAdminPartialExcludingPassword {
   '_id'?: string;
   email?: string;
   fullname?: string;
-  password?: string;
   phone?: string;
   position?: string;
   schoolId?: string;

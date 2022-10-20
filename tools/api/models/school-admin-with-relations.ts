@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+import { SchoolWithRelations } from './school-with-relations';
 
 /**
  * (tsType: SchoolAdminWithRelations, schemaOptions: { includeRelations: true })
@@ -11,6 +12,8 @@ export interface SchoolAdminWithRelations {
   password?: string;
   phone?: string;
   position: string;
+  school?: SchoolWithRelations;
+  schoolId?: string;
   staffID?: string;
   username: string;
 

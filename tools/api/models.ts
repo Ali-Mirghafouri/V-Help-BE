@@ -1,7 +1,13 @@
 export { User } from './models/user';
+export { School } from './models/school';
+export { SchoolAdmin } from './models/school-admin';
+export { NewSchoolAdmin } from './models/new-school-admin';
+export { SchoolWithRelations } from './models/school-with-relations';
 export { SchoolAdminWithRelations } from './models/school-admin-with-relations';
 export { SchoolAdminPartial } from './models/school-admin-partial';
-export { SchoolAdmin } from './models/school-admin';
+export { SchoolAdminPartialExcludingPassword } from './models/school-admin-partial-excluding-password';
+export { NewSchool } from './models/new-school';
+export { SchoolPartial } from './models/school-partial';
 export { Volunteer } from './models/volunteer';
 export { NewVolunteer } from './models/new-volunteer';
 export { VolunteerWithRelations } from './models/volunteer-with-relations';
