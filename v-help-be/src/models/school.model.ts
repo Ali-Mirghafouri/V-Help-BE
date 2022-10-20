@@ -12,7 +12,7 @@ export class School extends Entity {
     id: true,
     generated: true,
   })
-  schoolID?: string;
+  schoolId?: string;
 
   @property({
     type: 'string',

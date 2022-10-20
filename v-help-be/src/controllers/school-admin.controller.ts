@@ -19,33 +19,35 @@ import {
 } from '@loopback/rest';
 import {SchoolAdmin} from '../models';
 import {SchoolAdminRepository} from '../repositories';
+import {authenticate} from '@loopback/authentication';
 
+@authenticate('jwt')
 export class SchoolAdminController {
   constructor(
     @repository(SchoolAdminRepository)
     public schoolAdminRepository : SchoolAdminRepository,
   ) {}
 
-  // @post('/school-admins')
-  // @response(200, {
-  //   description: 'SchoolAdmin model instance',
-  //   content: {'application/json': {schema: getModelSchemaRef(SchoolAdmin)}},
-  // })
-  // async create(
-  //   @requestBody({
-  //     content: {
-  //       'application/json': {
-  //         schema: getModelSchemaRef(SchoolAdmin, {
-  //           title: 'NewSchoolAdmin',
-  //           exclude: ['_id'],
-  //         }),
-  //       },
-  //     },
-  //   })
-  //   schoolAdmin: Omit<SchoolAdmin, '_id'>,
-  // ): Promise<SchoolAdmin> {
-  //   return this.schoolAdminRepository.create(schoolAdmin);
-  // }
+  @post('/school-admins')
+  @response(200, {
+    description: 'SchoolAdmin model instance',
+    content: {'application/json': {schema: getModelSchemaRef(SchoolAdmin)}},
+  })
+  async create(
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: getModelSchemaRef(SchoolAdmin, {
+            title: 'NewSchoolAdmin',
+            exclude: ['_id'],
+          }),
+        },
+      },
+    })
+    schoolAdmin: Omit<SchoolAdmin, '_id'>,
+  ): Promise<SchoolAdmin> {
+    return this.schoolAdminRepository.create(schoolAdmin);
+  }
 
   @get('/school-admins/count')
   @response(200, {
@@ -120,13 +122,14 @@ export class SchoolAdminController {
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(SchoolAdmin, {partial: true}),
+          schema: getModelSchemaRef(SchoolAdmin, {partial: true, exclude: ['password']}),
         },
       },
     })
-    schoolAdmin: SchoolAdmin,
+    schoolAdmin: Omit<SchoolAdmin, 'password'>,
   ): Promise<void> {
     await this.schoolAdminRepository.updateById(id, schoolAdmin);
+    // await this
   }
 
   @put('/school-admins/{id}')

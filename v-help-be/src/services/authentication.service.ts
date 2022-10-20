@@ -143,8 +143,10 @@ export class AuthenticationService {
     if (!foundUser) {
       foundUser = await this.userRepository.create({
         username: 'root',
-        email: 'root@system.com'
-      } as User)
+        email: 'root@system.com',
+        type: 'root',
+        realm: 'email'
+      })
       // throw new HttpErrors.Unauthorized(invalidCredentialsError);
     }
 

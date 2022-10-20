@@ -7,3 +7,5 @@ export * from './ping.controller';
 export * from './auth.controller';
 export * from './school-admin.controller';
 export * from './volunteer.controller';
+export * from './school.controller';
+export * from './school-admin-school.controller';

@@ -3,8 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {model, property} from '@loopback/repository';
+import {model, property, belongsTo} from '@loopback/repository';
 import {User} from '.';
+import {School} from './school.model';
 
 @model({settings: {strict: false}})
 export class SchoolAdmin extends User {
@@ -30,6 +31,8 @@ export class SchoolAdmin extends User {
   })
   position: string;
 
+  @belongsTo(() => School, {name: 'school'})
+  schoolId: string;
   // Define well-known properties here
 
   // Indexer property to allow additional data

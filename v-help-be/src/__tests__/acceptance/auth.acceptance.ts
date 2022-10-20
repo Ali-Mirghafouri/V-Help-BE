@@ -6,9 +6,25 @@ describe("Authentication acceptance", () => {
 
   let app: VHelpBeApplication;
   let client: Client;
+  let rootToken : any;
 
   before(async () => {
     ({app, client} = await setupApplication());
+  })
+
+
+  describe("Test root user login",  () => {
+    it("Root user can login", async () => {
+      const result = await client.post("/auth/login/root").send({
+        username: "root",
+        password: "root1234"
+      })
+
+      console.log("result  -- ", result.body)
+      expect(result.status).equal(200);
+      expect(result.body).to.not.be.empty();
+      rootToken = result.body.accessToken;
+    })
   })
 
   describe("Tests school admin authentication", () => {
@@ -31,7 +47,7 @@ describe("Authentication acceptance", () => {
     });
 
     it("Fetch school admins", async () => {
-      const result = await client.get("/school-admins");
+      const result = await client.get("/school-admins").auth(rootToken, {type: 'bearer'});
 
       console.debug(result.body);
 
@@ -40,7 +56,7 @@ describe("Authentication acceptance", () => {
       expect(result.body.length).equal(1);
     })
 
-    it("New volunteer can login", async () => {
+    it("New school admin can login", async () => {
       const result = await client.post("/auth/login").send({
         username: "admin.test",
         password: "12345678",
@@ -85,8 +101,6 @@ describe("Authentication acceptance", () => {
     it("Registers a a new volunteer", async () => {
       const result = await client.post("/auth/register").send(volunteerData);
 
-      // console.debug(result.body?.error?.details);
-
       expect(result.status).equal(200);
       expect(result.body).to.not.be.empty();
     });
@@ -124,6 +138,15 @@ describe("Authentication acceptance", () => {
       expect(result.body.length).equal(1);
     })
 
+    it("Volunteer with Volunteer1 id exists", async () => {
+      const result = await client.get("/volunteers");
+
+      expect(result.status).equal(200);
+      expect(result.body).to.not.be.empty();
+      expect(result.body.length).equal(1);
+      expect(result.body[0].username).equal('volunteer1');
+    })
+
 
     it("Check if login works ", async () => {
       const result = await client.get("/auth/whoami").auth(
@@ -148,16 +171,4 @@ describe("Authentication acceptance", () => {
     })
   })
 
-  describe("Test root user login",  () => {
-    it("Root user can login", async () => {
-      const result = await client.post("/auth/login/root").send({
-        username: "root",
-        password: "root1234"
-      })
-
-      console.log("result  -- ", result.body)
-      expect(result.status).equal(200);
-      expect(result.body).to.not.be.empty();
-    })
-  })
 })
