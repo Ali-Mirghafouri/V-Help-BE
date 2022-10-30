@@ -13,14 +13,15 @@ export class Request extends Entity {
     id: true,
     generated: true,
   })
-  id?: string;
+  requestId: string;
 
 
   @property({
     type: 'string',
-    id: true
+    id: true,
+    generated: true
   })
-  requestID?: string;
+  id: string;
 
   @property({
     type: 'date',

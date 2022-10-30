@@ -5,7 +5,7 @@ import {TutorialRequest, TutorialRequestRelations} from '../models';
 
 export class TutorialRequestRepository extends DefaultCrudRepository<
   TutorialRequest,
-  typeof TutorialRequest.prototype.requestID,
+  typeof TutorialRequest.prototype.id,
   TutorialRequestRelations
 > {
   constructor(

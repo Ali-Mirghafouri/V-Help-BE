@@ -4,8 +4,9 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {Entity, model, property, hasMany} from '@loopback/repository';
-import {ResourceRequest} from './resource-request.model';
-import {TutorialRequest} from './tutorial-request.model';
+import { TutorialRequest, ResourceRequest } from '.';
+// import {ResourceRequest} from './resource-request.model';
+// import {TutorialRequest} from './tutorial-request.model';
 
 @model()
 export class School extends Entity {
@@ -36,7 +37,7 @@ export class School extends Entity {
 
   @hasMany(() => ResourceRequest)
   resourceRequests: ResourceRequest[];
-
+  //
   @hasMany(() => TutorialRequest)
   tutorialRequests: TutorialRequest[];
 

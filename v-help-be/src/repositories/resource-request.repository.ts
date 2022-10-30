@@ -5,7 +5,7 @@ import {ResourceRequest, ResourceRequestRelations} from '../models';
 
 export class ResourceRequestRepository extends DefaultCrudRepository<
   ResourceRequest,
-  typeof ResourceRequest.prototype.requestID,
+  typeof ResourceRequest.prototype.id,
   ResourceRequestRelations
 > {
   constructor(

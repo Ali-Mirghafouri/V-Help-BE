@@ -1,7 +1,7 @@
 import {inject} from '@loopback/core';
 import {DefaultCrudRepository} from '@loopback/repository';
-import {Error: bad inputDataSource} from '../datasources';
 import {Offer, OfferRelations} from '../models';
+import {MainDataSource} from '../datasources';
 
 export class OfferRepository extends DefaultCrudRepository<
   Offer,
@@ -9,7 +9,7 @@ export class OfferRepository extends DefaultCrudRepository<
   OfferRelations
 > {
   constructor(
-    @inject('datasources.') dataSource: Error: bad inputDataSource,
+    @inject('datasources.') dataSource: MainDataSource,
   ) {
     super(Offer, dataSource);
   }
