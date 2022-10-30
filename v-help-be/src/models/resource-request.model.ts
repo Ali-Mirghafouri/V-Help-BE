@@ -14,7 +14,12 @@ export class ResourceRequest extends Request {
   })
   resourceType: string;
 
+
   // @property({
+  @property({
+    type: 'string',
+  })
+  schoolId?: string;
   //   type: 'string',
   //   id: true,
   //   generated: true,

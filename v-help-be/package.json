@@ -25,7 +25,7 @@
     "test": "lb-mocha --allow-console-logs \"dist/__tests__\"",
     "posttest": "npm run lint",
     "test:dev": "lb-mocha --allow-console-logs dist/__tests__/**/*.js && npm run posttest",
-    "docker:build": "docker build -t v-help-be .",
+    "docker:build": "docker build -t z80lives/vhelp-be .",
     "docker:run": "docker run -p 3000:3000 -d v-help-be",
     "premigrate": "npm run build",
     "migrate": "node ./dist/migrate",

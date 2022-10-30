@@ -3,7 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Entity, model, property} from '@loopback/repository';
+import {Entity, model, property, hasMany} from '@loopback/repository';
+import {ResourceRequest} from './resource-request.model';
+import {TutorialRequest} from './tutorial-request.model';
 
 @model()
 export class School extends Entity {
@@ -32,6 +34,11 @@ export class School extends Entity {
   })
   city: string;
 
+  @hasMany(() => ResourceRequest)
+  resourceRequests: ResourceRequest[];
+
+  @hasMany(() => TutorialRequest)
+  tutorialRequests: TutorialRequest[];
 
   constructor(data?: Partial<School>) {
     super(data);

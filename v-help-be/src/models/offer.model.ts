@@ -32,6 +32,15 @@ export class Offer extends Entity {
   })
   offerStatus: string;
 
+  @property({
+    type: 'string',
+  })
+  requestId?: string;
+
+  @property({
+    type: 'string',
+  })
+  volunteerId?: string;
 
   constructor(data?: Partial<Offer>) {
     super(data);

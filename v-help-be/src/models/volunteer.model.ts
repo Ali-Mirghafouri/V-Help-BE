@@ -3,8 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {model, property} from '@loopback/repository';
+import {model, property, hasMany} from '@loopback/repository';
 import {User} from '.';
+import {Offer} from './offer.model';
 
 @model()
 export class Volunteer extends User {
@@ -27,6 +28,8 @@ export class Volunteer extends User {
   })
   occupation: string;
 
+  @hasMany(() => Offer)
+  offers: Offer[];
 
   constructor(data?: Partial<Volunteer>) {
     super(data);

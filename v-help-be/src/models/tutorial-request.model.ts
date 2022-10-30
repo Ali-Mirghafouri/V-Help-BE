@@ -20,8 +20,13 @@ export class TutorialRequest extends Request {
   })
   proposedTime: string;
 
+
   // @property({
   //   type: 'string',
+  @property({
+    type: 'string',
+  })
+  schoolId?: string;
   //   id: true,
   //   generated: true,
   // })

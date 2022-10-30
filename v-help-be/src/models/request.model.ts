@@ -3,7 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Entity, model, property} from '@loopback/repository';
+import {Entity, model, property, hasMany} from '@loopback/repository';
+import {Offer} from './offer.model';
 
 @model({settings: {strict: false}})
 export class Request extends Entity {
@@ -11,6 +12,13 @@ export class Request extends Entity {
     type: 'string',
     id: true,
     generated: true,
+  })
+  id?: string;
+
+
+  @property({
+    type: 'string',
+    id: true
   })
   requestID?: string;
 
@@ -32,6 +40,8 @@ export class Request extends Entity {
   })
   description: string;
 
+  @hasMany(() => Offer)
+  offers: Offer[];
   // Define well-known properties here
 
   // Indexer property to allow additional data
