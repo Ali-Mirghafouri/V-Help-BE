@@ -3,7 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {Entity, model, property} from '@loopback/repository';
+import {Entity, model, property, belongsTo} from '@loopback/repository';
+import {Volunteer} from './volunteer.model';
 
 @model()
 export class Offer extends Entity {
@@ -37,10 +38,8 @@ export class Offer extends Entity {
   })
   requestId?: string;
 
-  @property({
-    type: 'string',
-  })
-  volunteerId?: string;
+  @belongsTo(() => Volunteer)
+  volunteerId: string;
 
   constructor(data?: Partial<Offer>) {
     super(data);

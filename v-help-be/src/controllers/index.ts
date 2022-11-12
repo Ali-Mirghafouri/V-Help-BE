@@ -16,3 +16,4 @@ export * from './school-resource-request.controller';
 export * from './school-tutorial-request.controller';
 export * from './request-offer.controller';
 export * from './volunteer-offer.controller';
+export * from './offer-volunteer.controller';
