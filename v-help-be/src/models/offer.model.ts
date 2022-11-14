@@ -38,7 +38,12 @@ export class Offer extends Entity {
   })
   requestId?: string;
 
-  @belongsTo(() => Volunteer)
+  @property({
+    type: 'string',
+  })
+  requestType?: string;
+
+  @belongsTo(() => Volunteer, {name: 'volunteer'})
   volunteerId: string;
 
   constructor(data?: Partial<Offer>) {

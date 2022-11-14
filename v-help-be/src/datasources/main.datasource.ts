@@ -61,7 +61,8 @@ export class MainDataSource extends juggler.DataSource
         console.info("Using dev database")
       }
       else{	
-	  super(dsConfig);
+	      super(dsConfig);
+        console.info("Using production database");
       }
   }
 }
