@@ -4,11 +4,11 @@ This repository contains the REST API Service for our [assignment project](https
 
 ## Usage
 In order to quickly start a server, goto the development server and run the npm start script.
-
+```
   cd v-help-be
   npm i 
   npm run start
-
+```
 While running a development server, you can use `npm run build:watch` script to ensure that the `dist`
 folder is updated as you modify the contents of the `src`.
  
