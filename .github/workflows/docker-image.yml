@@ -30,7 +30,7 @@ jobs:
       name: Build and push
       uses: docker/build-push-action@v3
       with:
-        context: ./v-help-be
+        context: .
         file: ./v-help-be/Dockerfile
         push: true
         tags: z80lives/vhelp-be:latest
