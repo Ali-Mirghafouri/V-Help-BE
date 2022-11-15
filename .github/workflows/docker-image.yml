@@ -6,12 +6,16 @@ on:
   pull_request:
     branches: [ "main" ]
 
+defaults:
+  run:
+    working-directory: ./v-help-be
+
+
 jobs:
 
   build:
 
     runs-on: ubuntu-latest
-
 
 
     steps:
@@ -29,7 +33,6 @@ jobs:
     -
       name: Build and push
       uses: docker/build-push-action@v3
-      working-directory: ./v-help-be
       with:
         context: .
         push: true
