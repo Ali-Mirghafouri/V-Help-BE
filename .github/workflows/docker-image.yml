@@ -6,11 +6,6 @@ on:
   pull_request:
     branches: [ "main" ]
 
-defaults:
-  run:
-    working-directory: ./v-help-be
-
-
 jobs:
 
   build:
@@ -35,7 +30,6 @@ jobs:
       uses: docker/build-push-action@v3
       with:
         context: .
-        file: v-help-be/Dockerfile
         push: true
         tags: z80lives/vhelp-be:latest
 
